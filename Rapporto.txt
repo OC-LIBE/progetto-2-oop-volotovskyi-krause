@@ -1,0 +1,2 @@
+# 08.012025
+Abbiamo deciso di programmare il gioco BlackJack e di farlo in modo che più giocatori possano giocare allo stesso tempo.
