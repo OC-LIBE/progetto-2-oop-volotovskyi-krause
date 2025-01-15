@@ -24,4 +24,20 @@ if shuffle_button:
 st.image([card.image for card in deck.cards], width=card_width)
 
 
+class Player:
+    def __init__(self, score):
+        self.score = score
+    
 
+    def hand(self):
+        self.hand1 = []
+        length = 2
+        for i in range(length):
+            self.hand1.append(deck.cards[i])
+        st.image([card.image for card in self.hand1], width=card_width)    
+        return self.hand1
+
+
+if st.button("button"):
+    hand = Player(2).hand()
+    st.write(hand)
