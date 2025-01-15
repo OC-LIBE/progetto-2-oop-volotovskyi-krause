@@ -1,2 +1,6 @@
 # 08.012025
 Abbiamo deciso di programmare il gioco BlackJack e di farlo in modo che più giocatori possano giocare allo stesso tempo.
+
+
+# 15.01.2025
+Abbiamo deciso di dividere il lavoro in modo che uno fa le funzioni e l'altro fa la grafica. Per la grafica vogliamo fare in modo che le carte del giocatore e della banca sono in mezzo allo schermo. Abbiamo provato a fare una funzione per distribuire le carte.
