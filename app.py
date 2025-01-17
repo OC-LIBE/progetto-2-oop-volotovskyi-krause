@@ -10,8 +10,9 @@ card_width=95
 
 
 
-deck = Deck(1)
-shuffled = False 
+deck = Deck(0)
+if st.button('New Game'):
+    deck = Deck(0)
 
 
 #st.markdown(f"## Deck created with {number_of_decks} deck/s")
@@ -21,15 +22,7 @@ shuffled = False
 #st.markdown("## Shuffling deck")
  
 
-if st.button("Shuffle Deck"):
-    if shuffled == False:
-        deck.shuffle()
-        shuffled = True
-        st.success("Deck shuffled!")
-    else:
-        st.write("ok")
 
-st.write(shuffled)
 
 
 
