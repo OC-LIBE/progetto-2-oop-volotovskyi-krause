@@ -3,4 +3,10 @@ Abbiamo deciso di programmare il gioco BlackJack e di farlo in modo che più gio
 
 
 # 15.01.2025
-Abbiamo deciso di dividere il lavoro in modo che uno fa le funzioni e l'altro fa la grafica. Per la grafica vogliamo fare in modo che le carte del giocatore e della banca sono in mezzo allo schermo. Abbiamo provato a fare una funzione per distribuire le carte.
+Abbiamo deciso di dividere il lavoro in modo che uno fa le funzioni e l'altro fa la grafica. 
+Per la grafica vogliamo fare in modo che le carte del giocatore e della banca sono in mezzo allo schermo. 
+Abbiamo provato a fare una funzione per distribuire le carte.
+
+
+# 22.01.2025
+Abbiamo fatto in modo che in mazzo di carte non si mischi ogni volta che si pesca una carta. Abbiamo fatto la funzione per poter pescare una carta e quella che fa l'output "Hai perso" quando la somma delle carte supera 21. Abbiamo provato a fare una sidebar per l'inizio del gioco dove si può inserire il nome.
