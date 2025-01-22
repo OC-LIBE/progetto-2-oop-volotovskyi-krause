@@ -16,6 +16,7 @@ class Deck:
         decks = [Card(rank, suit) for suit in suits for rank in range(1, 14)
                  for deck in range(number_of_decks)]
         self.cards.extend(decks)
+        
 
     def shuffle(self):
         self.cards = random.sample(self.cards, len(self.cards))

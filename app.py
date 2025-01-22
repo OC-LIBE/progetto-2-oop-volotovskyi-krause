@@ -8,11 +8,12 @@ st.set_page_config(
 )
 card_width=95
 
+if 'deck' not in st.session_state:
+    st.session_state.deck = Deck(1)
+    st.session_state.deck.shuffle()
+deck = st.session_state.deck
 
 
-deck = Deck(0)
-if st.button('New Game'):
-    deck = Deck(0)
 
 
 #st.markdown(f"## Deck created with {number_of_decks} deck/s")
@@ -20,37 +21,47 @@ if st.button('New Game'):
 #st.image([card.image for card in deck.cards], width=card_width)
 
 #st.markdown("## Shuffling deck")
- 
 
 
+class Game():
+    def __init__(self):
+        self.deck = deck
+        
 
 
-
+st.image([card.image for card in deck.cards], width=card_width)
 
 
 class Player:
     def __init__(self):
         self.score = 0
         self.handlist = []
+        self.hand()
+        if 'handlist' not in st.session_state:
+            st.session_state.handlist = self.handlist
+        self.handf = st.session_state.handlist
+    
 
     def hand(self):
-        
-        st.image([card.image for card in deck.cards], width=card_width)
-        self.handlist = []
-        length = 2
-        for i in range(length):
-            self.handlist.append(deck.cards[i])
-        del deck.cards[:2]
-        #st.image([card.image for card in self.hand], width=card_width)
+        drawn_card = deck.draw()
+        self.handlist.append(drawn_card)
         return self.handlist
     
     
     def calc_score(self):
-        for i in self.handlist:
+        for i in self.handf:
             obj = i
             a=(getattr(obj, 'rank'))
             self.score = self.score + a
         return self.score
+
+
+
+class HumanPlayer(Player):
+    def __init__(self):
+        self.score = Player.score
+
+
 
 class Dealer:
     def __init__(self):
@@ -59,34 +70,16 @@ class Dealer:
 
 
 
-
 player = Player()
-hand = player.hand()
 
 
-
-
-
-
-#if st.button("button"):
-    #hand = Player(2).hand()
-    #st.image([card.image for card in hand], width=card_width)
-    #st.write(hand)
-    
-   # for i in hand:
-       # obj = i
-        #st.write(getattr(obj, 'rank'))
-
-    #for i in hand:
-        
-#taking card
 if st.button("take card"):
-    player.handlist.append(deck.cards[0])
-    del deck.cards[:1]
-    st.write(player.handlist)
+    player.handf.append(deck.cards[0])
+    #del deck.cards[0]
+    st.write(player.handf)
     
 
-st.image([card.image for card in player.handlist], width=card_width)
+st.image([card.image for card in player.handf], width=card_width)
 
 #score
 plscore = player.calc_score()
@@ -98,7 +91,7 @@ if plscore > 21:
 col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11 = st.columns(11, gap="small")
 def col_insert(col_num):
     try:
-        st.image(hand[col_num-1].image,width=card_width)
+        st.image(player.handf[col_num-1].image,width=card_width)
     except TypeError:
         print('')
     except IndexError:
@@ -110,3 +103,9 @@ with col2:
     col_insert(2)
 with col3:
     col_insert(3)
+with col4:
+    col_insert(4)
+with col5:
+    col_insert(5)
+with col6:
+    col_insert(6)
