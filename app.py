@@ -15,7 +15,6 @@ deck = st.session_state.deck
 
 
 
-
 #st.markdown(f"## Deck created with {number_of_decks} deck/s")
 
 #st.image([card.image for card in deck.cards], width=card_width)
@@ -40,6 +39,7 @@ class Player:
             st.session_state.handlist = self.handlist
             self.hand_ap()
             self.hand_ap()
+            st.write('player')
         self.handf = st.session_state.handlist
     
 
@@ -59,39 +59,51 @@ class Player:
 player = Player()
 
 
-class HumanPlayer(Player):
+class Dealer(Player):
     def __init__(self):
-        self.name = "Player1"
-
-
-#class Dealer(Player):
-    def __init__(self):
-        self.name = 'Dealer'
+        self.score = 0
         self.handlist = []
         if 'handlist1' not in st.session_state:
-            st.session_state.handlist = self.handlist
+            st.session_state.handlist1 = self.handlist
             self.hand_ap()
             self.hand_ap()
-        self.hand1 = st.session_state.handlist
+            st.write('dealer')
+        self.handf = st.session_state.handlist1
+    
+    def take_card(self):
+        if 'stand'in st.session_state:
+            if self.score <= 16:
+                self.handf.append(deck.cards[0])
+                self.hand_ap()
 
 
 
-#dealer = Dealer()
-#st.write(dealer.hand1)
-#st.image([card.image for card in dealer.hand1], width=card_width)
+dealer = Dealer()
+st.write(dealer.handf)
+st.image([card.image for card in dealer.handf], width=card_width)
 
+#Dealer score
+dlscore = dealer.calc_score()
+st.markdown(f'Dealer score: {dlscore}')
 
+#Game Buttons
 if st.button("Hit"):
     player.handf.append(deck.cards[0])
     player.hand_ap()
     st.write(player.handf)
     
+if st.button('Stand'):
+    if 'stand' not in st.session_state:
+        st.session_state.stand = True
+    dealer.take_card()
 
 st.image([card.image for card in player.handf], width=card_width)
 
-#score
+
+
+#Player score
 plscore = player.calc_score()
-st.markdown(f'Your score: {plscore} Dealer Score: ')
+st.markdown(f'Your score: {plscore}')
 if plscore > 21:
     st.error('You lost')
 
