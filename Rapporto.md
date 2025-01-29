@@ -24,4 +24,6 @@ Sono riuscito a riparare la classe Dealer cosi che il mazzo non va in conflitto 
 'take card' che riempie il mazzo del Dealer delle carte se non ce ne sono abbastanza. Per ora non funziona come dovrebbe. Il lavoro è in progresso.
 
 # 29.01.2025
-Abbiamo fissato la funzione "stand" che aggiunge una carta al dealer quando il giocatore ha finito di prendere le sue carte.
+Abbiamo finito la funzione "stand" che aggiunge le carte mancanti carta al dealer quando il giocatore ha finito di prendere le sue carte.
+Abbiamo anche fatto la classe Game e la funzione result che è responsabile dei risultati del gioco quando si devono confrontare gli score
+degli giocatori. Abbiamo anche aggiunto il metodo 'New Game' che pulisce il cache e fa ripartire il gioco.
