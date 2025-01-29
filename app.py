@@ -71,16 +71,22 @@ class Dealer(Player):
         self.handf = st.session_state.handlist1
     
     def take_card(self):
-        if 'stand'in st.session_state:
-            if self.score <= 16:
-                self.handf.append(deck.cards[0])
-                self.hand_ap()
+        try:
+            if 'stand'in st.session_state:
+                if self.score <= 16:
+                    self.handf.append(deck.cards[0])
+                    self.hand_ap()
+                elif self.score >= 19:
+                    st.write('')
+        except IndexError:
+            st.write('')
+                
 
 
 
 dealer = Dealer()
 st.write(dealer.handf)
-st.image([card.image for card in dealer.handf], width=card_width)
+
 
 #Dealer score
 dlscore = dealer.calc_score()
@@ -95,9 +101,11 @@ if st.button("Hit"):
 if st.button('Stand'):
     if 'stand' not in st.session_state:
         st.session_state.stand = True
-    dealer.take_card()
-
+        dealer.take_card()
+        
+st.image([card.image for card in dealer.handf], width=card_width)
 st.image([card.image for card in player.handf], width=card_width)
+
 
 
 
