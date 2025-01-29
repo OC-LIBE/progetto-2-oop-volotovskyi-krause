@@ -22,3 +22,6 @@ a fare la classe del Dealer che eredita la classe Player. Per ora non funziona c
 # 28.01.2025
 Sono riuscito a riparare la classe Dealer cosi che il mazzo non va in conflitto con quello del Player. Ho anche aggiunto la funzione
 'take card' che riempie il mazzo del Dealer delle carte se non ce ne sono abbastanza. Per ora non funziona come dovrebbe. Il lavoro è in progresso.
+
+# 29.01.2025
+Abbiamo fissato la funzione "stand" che aggiunge una carta al dealer quando il giocatore ha finito di prendere le sue carte.
