@@ -2,7 +2,6 @@ import streamlit as st
 from modules.card import Card
 from modules.deck import Deck
 
-
 st.set_page_config(
    layout="wide",
 )
@@ -13,22 +12,34 @@ if 'deck' not in st.session_state:
     st.session_state.deck.shuffle()
 deck = st.session_state.deck
 
-
-
-#st.markdown(f"## Deck created with {number_of_decks} deck/s")
-
-#st.image([card.image for card in deck.cards], width=card_width)
-
-#st.markdown("## Shuffling deck")
-
+plscore = 0
+dlscore = 0
 
 class Game():
     def __init__(self):
         self.deck = deck
-        
+
+    
+    def result(self):
+        if plscore > dlscore:
+            st.success('You won')
+            if 'winlose' not in st.session_state:
+                st.session_state.winlose = True
+
+        elif dlscore>plscore:
+            st.error('You lost')
+            if 'winlose' not in st.session_state:
+                st.session_state.winlose = True
+
+        elif plscore == dlscore:
+            st.info('Draw')
+            if 'winlose' not in st.session_state:
+                st.session_state.winlose = True
 
 
-st.image([card.image for card in deck.cards], width=card_width)
+game = Game()
+
+#st.image([card.image for card in deck.cards], width=card_width)
 
 
 class Player:
@@ -39,8 +50,18 @@ class Player:
             st.session_state.handlist = self.handlist
             self.hand_ap()
             self.hand_ap()
-            st.write('player')
+            #st.write('player')
         self.handf = st.session_state.handlist
+        #for card in self.handf:
+           # a = getattr(card, 'rank')
+            #st.write(a)
+            #if a == 1:
+                #options = [1,11]
+                #b = st.pills('',options)
+                #c = {b}
+                #st.write(type(c))
+                #card.rank = int(c)
+
     
 
     def hand_ap(self):
@@ -49,12 +70,11 @@ class Player:
         return self.handlist
     
     
-    def calc_score(self):
-        for i in self.handf:
-            obj = i
-            a=(getattr(obj, 'rank'))
-            self.score = self.score + a
+    def calc_score(self):  
+        self.score = sum(getattr(card, 'rank') for card in self.handf)
+        
         return self.score
+
 
 player = Player()
 
@@ -67,16 +87,19 @@ class Dealer(Player):
             st.session_state.handlist1 = self.handlist
             self.hand_ap()
             self.hand_ap()
-            st.write('dealer')
+            #st.write('dealer')
         self.handf = st.session_state.handlist1
     
     def take_card(self):
         try:
             if 'stand'in st.session_state:
-                if self.score <= 16:
+                self.calc_score()
+                while self.score <= 16:
                     self.handf.append(deck.cards[0])
                     self.hand_ap()
-                elif self.score >= 19:
+                    self.calc_score()
+                if self.score >= 19:
+                    #st.write(f'Dealer stops drawing, {self.score}')
                     st.write('')
         except IndexError:
             st.write('')
@@ -85,35 +108,58 @@ class Dealer(Player):
 
 
 dealer = Dealer()
-st.write(dealer.handf)
+#st.write(dealer.handf)
 
 
-#Dealer score
-dlscore = dealer.calc_score()
-st.markdown(f'Dealer score: {dlscore}')
+
+
 
 #Game Buttons
-if st.button("Hit"):
-    player.handf.append(deck.cards[0])
-    player.hand_ap()
-    st.write(player.handf)
+if 'stand' not in st.session_state:
+    if 'winlose' not in st.session_state:
+        if st.button("Hit"):
+            player.handf.append(deck.cards[0])
+            player.hand_ap()
+            #st.write(player.handf)
+
+
+if 'winlose' not in st.session_state:   
+    if st.button('Stand'):
+        if 'stand' not in st.session_state:
+            st.session_state.stand = True
+            dealer.take_card()
+
     
-if st.button('Stand'):
-    if 'stand' not in st.session_state:
-        st.session_state.stand = True
-        dealer.take_card()
-        
-st.image([card.image for card in dealer.handf], width=card_width)
-st.image([card.image for card in player.handf], width=card_width)
+#Immediate score counter
+dlscore = dealer.calc_score()
+if dlscore > 21 or plscore == 21:
+    st.success('You won')
+    if 'winlose' not in st.session_state:
+        st.session_state.winlose = True
 
 
-
-
-#Player score
 plscore = player.calc_score()
-st.markdown(f'Your score: {plscore}')
-if plscore > 21:
+if plscore > 21 or dlscore == 21:
     st.error('You lost')
+    if 'winlose' not in st.session_state:
+        st.session_state.winlose = True
+
+
+if 'stand' in st.session_state and 'winlose' not in st.session_state:
+    game.result()
+
+
+st.image([card.image for card in dealer.handf], width=card_width)
+st.markdown(f'Dealer score: {dlscore}')
+st.image([card.image for card in player.handf], width=card_width)
+st.markdown(f'Your score: {plscore}')
+
+if 'winlose' in st.session_state:
+    if st.button('New Game'):
+        st.session_state.clear()
+        st.rerun()
+        
+
 
 #columns
 #col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11 = st.columns(11, gap="small")
