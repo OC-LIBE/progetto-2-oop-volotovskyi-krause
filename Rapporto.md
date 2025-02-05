@@ -27,3 +27,6 @@ Sono riuscito a riparare la classe Dealer cosi che il mazzo non va in conflitto 
 Abbiamo finito la funzione "stand" che aggiunge le carte mancanti carta al dealer quando il giocatore ha finito di prendere le sue carte.
 Abbiamo anche fatto la classe Game e la funzione result che è responsabile dei risultati del gioco quando si devono confrontare gli score
 degli giocatori. Abbiamo anche aggiunto il metodo 'New Game' che pulisce il cache e fa ripartire il gioco.
+
+# 05.02.2025
+Ho aggiunto il codice che gira la seconda carta del dealer e dopo aver cliccato 'Stand' la rigira. In sviluppo è anche la separazione del codice in due parti: back e front. È anche stata aggiunta la carta 0C che non esiste nel gioco ma reale ma qui rappresenta la parte dietro della carta che viene usata per girare la seconda carta del dealer.
