@@ -95,16 +95,14 @@ class Dealer(Player):
         if 'stand' not in st.session_state:
             self.handf.append(card0)
 
+
     def back_card(self):
         if 'stand' in st.session_state:
             self.handf.append(self.stexlist[0])
             self.handf.remove(card0)
         
-        
-
-        
-
     
+
     def take_card(self):
         try:
             if 'stand'in st.session_state:
@@ -120,11 +118,8 @@ class Dealer(Player):
                 
 
 
-#st.image(card0.image)
 
 dealer = Dealer()
-#st.image([card.image for card in dealer.stexlist], width=card_width)
-
 
 
 
@@ -168,11 +163,10 @@ if 'stand' in st.session_state and 'winlose' not in st.session_state:
 
 st.image([card.image for card in dealer.handf], width=card_width)
 st.markdown(f'Dealer score: {dlscore}')
-st.image([card.image for card in player.handf], width=card_width)
-
-
-        
+st.image([card.image for card in player.handf], width=card_width)     
 st.markdown(f'Your score: {plscore}')
+
+
 
 if 'winlose' in st.session_state:
     if st.button('New Game'):
