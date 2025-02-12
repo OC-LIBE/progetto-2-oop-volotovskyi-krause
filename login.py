@@ -2,13 +2,8 @@ import streamlit as st
 import base64
 from modules.card import Card
 from modules.deck import Deck
-from app import Player
-from app import Dealer
-from app import Game
+import json
 
-deck = Deck(1)
-player = Player()
-dealer = Dealer()
 
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
@@ -28,16 +23,24 @@ def set_background(jpg_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 set_background('./images/tab.jpg')
 
+dic = {}
 
-
-#Game Buttons
-#if 'stand' not in st.session_state:
-    #if st.button("Hit"):
-        #player.handf.append(deck.cards[0])
-        #player.hand_ap()
-        #st.write(player.handf)
+with st.popover('Sign in'):
+    login = st.text_input('Login')
+    password = st.text_input('Password')
     
-#if st.button('Stand'):
-    #if 'stand' not in st.session_state:
-       # st.session_state.stand = True
-        #dealer.take_card()
+        
+with st.popover('New Account'):
+    new_login = st.text_input('','Login1')
+    new_password = st.text_input('','Password2')
+    if st.button('Register'):
+        dic.update({new_login: new_password})
+        json = json.dumps(dic)
+        f = open("accounts.json","w")
+        f.write(json)
+        f.close()
+        st.success('You Cretaed an Account')
+
+
+
+st.write(dic)
