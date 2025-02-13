@@ -1,46 +1,47 @@
 import streamlit as st
-import base64
-from modules.card import Card
-from modules.deck import Deck
 import json
+import os
 
 
-def get_base64(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
+json_file = "accounts.json"
 
-def set_background(jpg_file):
-    bin_str = get_base64(jpg_file)
-    page_bg_img = '''
-    <style>
-    .stApp {
-    background-image: url("data:image/jpg;base64,%s");
-    background-size: cover;
-    }
-    </style>
-    ''' % bin_str
-    st.markdown(page_bg_img, unsafe_allow_html=True)
-set_background('./images/tab.jpg')
+if os.path.exists(json_file):
+    with open(json_file, "r") as infile:
+        try:
+            existing_data = json.load(infile)
+        except json.JSONDecodeError:
+            existing_data = {}  # If the file is empty or corrupted, start fresh
+else:
+    existing_data = {}
 
-dic = {}
+
+if "dicl" not in st.session_state:
+    st.session_state.dicl = existing_data
+diclist = st.session_state.dicl
 
 with st.popover('Sign in'):
     login = st.text_input('Login')
     password = st.text_input('Password')
-    
+    if st.button('Sign in'):
+        for key, value in diclist.items():
+            if login == key and password == value:
+                st.success('You successfully logined!')
+                st.switch_page("app.py")
+            else:
+                st.error('Wrong Login/Password')
         
 with st.popover('New Account'):
     new_login = st.text_input('','Login1')
     new_password = st.text_input('','Password2')
+    
     if st.button('Register'):
-        dic.update({new_login: new_password})
-        json = json.dumps(dic)
-        f = open("accounts.json","w")
-        f.write(json)
-        f.close()
+        dic = {new_login: new_password}
+        diclist.update(dic.copy())
         st.success('You Cretaed an Account')
 
 
+with open(json_file, "w") as outfile:
+    json.dump(diclist, outfile)
+outfile.close()
 
-st.write(dic)
+st.write(diclist)
