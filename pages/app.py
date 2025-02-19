@@ -2,10 +2,15 @@ import streamlit as st
 from modules.card import Card
 from modules.deck import Deck
 import base64
+from login import username
 
-st.set_page_config(
-   layout="wide",
-)
+try:
+    st.set_page_config(
+    layout="wide",
+    )
+except st.errors.StreamlitSetPageConfigMustBeFirstCommandError:
+    st.write('')
+
 
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
@@ -32,7 +37,21 @@ card_width=95
 card0 = Card(0,'Clubs')
 
 
-    
+
+class User():
+    def __init__(self):
+        self.name = username
+        self.money = 2000
+
+user = User()
+
+st.header(f'{username}: {user.money}$')
+
+with st.popover("Bet"):
+    option = st.selectbox("Choose your bet",(25,50,100,200,500,1000))
+    if st.button('Confirm'):
+        st.success('Success')
+
 
 
 if 'deck' not in st.session_state:
@@ -53,17 +72,19 @@ class Game():
             st.success('You won')
             if 'winlose' not in st.session_state:
                 st.session_state.winlose = True
+                user.money = user.money + option
 
         elif dlscore>plscore:
             st.error('You lost')
             if 'winlose' not in st.session_state:
                 st.session_state.winlose = True
+                user.money = user.money - option
 
         elif plscore == dlscore:
             st.info('Draw')
             if 'winlose' not in st.session_state:
                 st.session_state.winlose = True
-
+                
 
 game = Game()
 
@@ -151,6 +172,7 @@ dealer = Dealer()
 
 
 
+
 #Game Buttons
 if 'stand' not in st.session_state:
     if 'winlose' not in st.session_state:
@@ -176,12 +198,14 @@ if dlscore > 21 or plscore == 21:
     st.success('You won')
     if 'winlose' not in st.session_state:
         st.session_state.winlose = True
+        user.money = user.money + option
 
 
 if plscore > 21 or dlscore == 21:
     st.error('You lost')
     if 'winlose' not in st.session_state:
         st.session_state.winlose = True
+        user.money = user.money - option
 
 
 if 'stand' in st.session_state and 'winlose' not in st.session_state:
