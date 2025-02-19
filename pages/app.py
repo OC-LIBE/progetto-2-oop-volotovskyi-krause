@@ -45,7 +45,8 @@ class User():
 
 user = User()
 
-st.header(f'{username}: {user.money}$')
+st.header(f'Hello, {username}')
+st.header(f'Balance: {user.money}$')
 
 with st.popover("Bet"):
     option = st.selectbox("Choose your bet",(25,50,100,200,500,1000))

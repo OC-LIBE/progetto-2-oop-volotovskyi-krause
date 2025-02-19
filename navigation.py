@@ -3,7 +3,7 @@ from time import sleep
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 from streamlit.source_util import get_pages
 
-
+st.session_state.logged_in = False
 def get_current_page_name():
     ctx = get_script_run_ctx()
     if ctx is None:
@@ -20,17 +20,17 @@ def make_sidebar():
         st.write("")
         st.write("")
 
-        if st.session_state.get("logged_in", False):
-
+        if st.session_state.get("logged_in", True):
+            
             st.write("")
             st.write("")
 
             if st.button("Log out"):
                     logout()
         
-
-        elif get_current_page_name() != "login":
-            st.switch_page("login.py")
+        if st.session_state.get("logged_in", False):
+            if get_current_page_name() == "app":
+                st.switch_page("login.py")
 
 
 def logout():
