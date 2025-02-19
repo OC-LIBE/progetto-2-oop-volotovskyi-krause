@@ -38,21 +38,46 @@ card0 = Card(0,'Clubs')
 
 
 
+
+
+with st.popover("Bet"):
+    bet = st.selectbox("Choose your bet",(0,25,50,100,200,500,1000))
+    if st.button('Confirm'):
+        if 'bet' not in st.session_state:
+            st.session_state.bet = bet
+        st.success('Success')
+
+if 'bet' not in st.session_state:
+    st.session_state.bet = 0
+option = st.session_state.bet
+
+st.write(option)    
+
+
 class User():
     def __init__(self):
         self.name = username
         self.money = 2000
+        if 'balance' not in st.session_state:
+            st.session_state.balance = self.money
+        self.balance = st.session_state.balance
+    
+    
+    def l_money(self):
+        self.balance -= option
+        st.write(self.balance)
+        return self.balance
+        
+    
+    def w_money(self):
+        self.balance += option
+        st.write(self.balance)
+        return self.balance
 
 user = User()
 
 st.header(f'Hello, {username}')
-st.header(f'Balance: {user.money}$')
-
-with st.popover("Bet"):
-    option = st.selectbox("Choose your bet",(25,50,100,200,500,1000))
-    if st.button('Confirm'):
-        st.success('Success')
-
+st.header(f'Balance: {user.balance}$')
 
 
 if 'deck' not in st.session_state:
@@ -73,13 +98,13 @@ class Game():
             st.success('You won')
             if 'winlose' not in st.session_state:
                 st.session_state.winlose = True
-                user.money = user.money + option
+                user.w_money()
 
         elif dlscore>plscore:
             st.error('You lost')
             if 'winlose' not in st.session_state:
                 st.session_state.winlose = True
-                user.money = user.money - option
+                user.l_money()
 
         elif plscore == dlscore:
             st.info('Draw')
@@ -175,6 +200,7 @@ dealer = Dealer()
 
 
 #Game Buttons
+
 if 'stand' not in st.session_state:
     if 'winlose' not in st.session_state:
         if st.button("Hit"):
@@ -199,14 +225,14 @@ if dlscore > 21 or plscore == 21:
     st.success('You won')
     if 'winlose' not in st.session_state:
         st.session_state.winlose = True
-        user.money = user.money + option
+        user.w_money()
 
 
 if plscore > 21 or dlscore == 21:
     st.error('You lost')
     if 'winlose' not in st.session_state:
         st.session_state.winlose = True
-        user.money = user.money - option
+        user.l_money()
 
 
 if 'stand' in st.session_state and 'winlose' not in st.session_state:
@@ -218,11 +244,18 @@ st.markdown(f'Dealer score: {dlscore}')
 st.image([card.image for card in player.handf], width=card_width)     
 st.markdown(f'Your score: {plscore}')
 
-
+st.write(user.balance)
 
 if 'winlose' in st.session_state:
     if st.button('New Game'):
-        st.session_state.clear()
+        balance_backup = st.session_state.get("balance", user.balance)
+        keys_to_keep = ["balance"]
+        for key in list(st.session_state.keys()):
+            if key not in keys_to_keep:
+                del st.session_state[key]
+
+        st.session_state.balance = balance_backup
+       
         st.rerun()
         
 
