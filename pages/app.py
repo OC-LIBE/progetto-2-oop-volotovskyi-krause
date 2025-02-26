@@ -2,7 +2,8 @@ import streamlit as st
 from modules.card import Card
 from modules.deck import Deck
 import base64
-from login import username
+import json
+import os
 
 try:
     st.set_page_config(
@@ -10,6 +11,26 @@ try:
     )
 except st.errors.StreamlitSetPageConfigMustBeFirstCommandError:
     st.write('')
+
+
+json_balance = "balance.json"
+if os.path.exists(json_balance):
+    with open(json_balance, "r") as infile_b:
+        try:
+            existing_data_b = json.load(infile_b)
+        except json.JSONDecodeError:
+            existing_data_b = {} 
+
+if "dicb" not in st.session_state:
+     st.session_state.dicb = existing_data_b
+diclist_b = st.session_state.dicb
+
+
+field_key = f'{st.session_state.username}'
+for key, value in diclist_b.items():
+    if 'username' in st.session_state:
+        if st.session_state.username == key:
+            balance = value
 
 
 def get_base64(bin_file):
@@ -47,19 +68,21 @@ with st.popover("Bet"):
             st.session_state.bet = bet
         st.success('Success')
 
-if 'bet' not in st.session_state:
-    st.session_state.bet = 0
-option = st.session_state.bet
+try:
+    option = st.session_state.bet
+except AttributeError:
+    option = 0
 
 st.write(option)    
 
 
 class User():
     def __init__(self):
-        self.name = username
-        self.money = 2000
+        if "username" in st.session_state:
+            self.name = st.session_state.username
+
         if 'balance' not in st.session_state:
-            st.session_state.balance = self.money
+            st.session_state.balance = balance
         self.balance = st.session_state.balance
     
     
@@ -76,7 +99,7 @@ class User():
 
 user = User()
 
-st.header(f'Hello, {username}')
+st.header(f'Hello, **{user.name}** 👋')
 st.header(f'Balance: {user.balance}$')
 
 
@@ -247,15 +270,23 @@ st.markdown(f'Your score: {plscore}')
 st.write(user.balance)
 
 if 'winlose' in st.session_state:
+    
+    if field_key in json_balance:
+            json_balance[field_key] = user.balance
+            with open(json_balance, "w") as outfile_b:
+                json.dumps(json_balance)
+            outfile_b.close()
+
     if st.button('New Game'):
-        balance_backup = st.session_state.get("balance", user.balance)
-        keys_to_keep = ["balance"]
+        balance_backup = st.session_state.get('balance', user.balance)
+        username_backup = st.session_state.get('username', user.name)
+        keys_to_keep = ['balance','username']
         for key in list(st.session_state.keys()):
             if key not in keys_to_keep:
                 del st.session_state[key]
 
         st.session_state.balance = balance_backup
-       
+        st.session_state.username = username_backup
         st.rerun()
         
 

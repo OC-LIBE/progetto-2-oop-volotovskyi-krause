@@ -19,6 +19,20 @@ if "dicl" not in st.session_state:
 diclist = st.session_state.dicl
 
 
+json_balance = "balance.json"
+if os.path.exists(json_balance):
+    with open(json_balance, "r") as infile_b:
+        try:
+            existing_data_b = json.load(infile_b)
+        except json.JSONDecodeError:
+            existing_data_b = {} 
+else:
+    existing_data_b = {}
+
+if "dicb" not in st.session_state:
+     st.session_state.dicb = existing_data_b
+diclist_b = st.session_state.dicb
+
 st.title("Welcome to BlackJack")
 
 st.write("Please sign up to continue (username `test`, password `test`).")
@@ -29,6 +43,8 @@ password = st.text_input("Password", type="password")
 if st.button("Create account", type="primary"):
     dic = {username: password}
     diclist.update(dic.copy())
+    dic_balance = {username: 2000}
+    diclist_b.update(dic_balance.copy())
     st.session_state.logged_in = True
     st.success("Account successfully created!")
     sleep(0.3)
@@ -37,3 +53,7 @@ if st.button("Create account", type="primary"):
 with open(json_file, "w") as outfile:
     json.dump(diclist, outfile)
 outfile.close()
+
+with open(json_balance, "w") as outfile_b:
+    json.dump(diclist_b, outfile_b)
+outfile_b.close()
