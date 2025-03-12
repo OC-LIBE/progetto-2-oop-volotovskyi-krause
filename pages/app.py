@@ -5,6 +5,9 @@ import base64
 import json
 import os
 
+if "username" not in st.session_state:
+    st.switch_page("login.py")
+
 try:
     st.set_page_config(
     layout="wide",
@@ -25,12 +28,16 @@ if "dicb" not in st.session_state:
      st.session_state.dicb = existing_data_b
 diclist_b = st.session_state.dicb
 
+if 'username' in st.session_state:
+    field_key = st.session_state.username
 
-field_key = f'{st.session_state.username}'
-for key, value in diclist_b.items():
-    if 'username' in st.session_state:
-        if st.session_state.username == key:
-            balance = value
+balance = diclist_b.get(field_key, 0)
+
+# field_key = f'{st.session_state.username}'
+# for key, value in diclist_b.items():
+#     if 'username' in st.session_state:
+#         if st.session_state.username == key:
+#             balance = value
 
 
 def get_base64(bin_file):
@@ -67,34 +74,39 @@ with st.popover("Bet"):
         if 'bet' not in st.session_state:
             st.session_state.bet = bet
         st.success('Success')
+if "bet" in st.session_state:
+    if bet != st.session_state.bet:
+        st.session_state.bet = bet
+    st.write(f"Your current bet: {st.session_state.bet}")
+    
 
 try:
     option = st.session_state.bet
 except AttributeError:
     option = 0
 
-st.write(option)    
+   
 
 
 class User():
     def __init__(self):
+        self.balance = balance
         if "username" in st.session_state:
             self.name = st.session_state.username
 
-        if 'balance' not in st.session_state:
-            st.session_state.balance = balance
-        self.balance = st.session_state.balance
+        # if 'balance' not in st.session_state:
+        #     st.session_state.balance = balance
+        # self.balance = st.session_state.balance
+            
     
     
     def l_money(self):
         self.balance -= option
-        st.write(self.balance)
         return self.balance
         
     
     def w_money(self):
         self.balance += option
-        st.write(self.balance)
         return self.balance
 
 user = User()
@@ -267,26 +279,45 @@ st.markdown(f'Dealer score: {dlscore}')
 st.image([card.image for card in player.handf], width=card_width)     
 st.markdown(f'Your score: {plscore}')
 
-st.write(user.balance)
+# st.write(user.balance)
+
+balance_backup = st.session_state.get('balance', user.balance)
+username_backup = st.session_state.get('username', user.name)
+try:
+    bet_backup = st.session_state.bet
+except AttributeError:
+    bet_backup = 0
+# try:
+#     st.write(st.session_state.balance)
+# except AttributeError:
+#     st.write("")
 
 if 'winlose' in st.session_state:
+
+    diclist_b[field_key] = user.balance
+    with open(json_balance, "w") as outfile_b:
+        json.dump(diclist_b, outfile_b, indent=4)
+    #st.success(f"Balance updated for {field_key}: {user.balance}")
+    outfile_b.close()
     
-    if field_key in json_balance:
-            json_balance[field_key] = user.balance
-            with open(json_balance, "w") as outfile_b:
-                json.dumps(json_balance)
-            outfile_b.close()
+    # if field_key in json_balance:
+    #         json_balance[field_key] = user.balance
+    #         with open(json_balance, "w") as outfile_b:
+    #             json.dumps(json_balance)
+    #         outfile_b.close()
+
+
 
     if st.button('New Game'):
-        balance_backup = st.session_state.get('balance', user.balance)
-        username_backup = st.session_state.get('username', user.name)
-        keys_to_keep = ['balance','username']
+        keys_to_keep = ['balance','username',"bet"]
         for key in list(st.session_state.keys()):
             if key not in keys_to_keep:
                 del st.session_state[key]
 
         st.session_state.balance = balance_backup
         st.session_state.username = username_backup
+        st.session_state.bet = bet_backup
+
         st.rerun()
         
 
