@@ -1,5 +1,5 @@
 # 08.01.2025
-Abbiamo deciso di programmare il gioco BlackJack e di farlo in modo che più giocatori possano giocare allo stesso tempo.
+Abbiamo deciso di programmare il gioco BlackJack.
 
 
 # 15.01.2025
@@ -30,3 +30,21 @@ degli giocatori. Abbiamo anche aggiunto il metodo 'New Game' che pulisce il cach
 
 # 05.02.2025
 Ho aggiunto il codice che gira la seconda carta del dealer e dopo aver cliccato 'Stand' la rigira. In sviluppo è anche la separazione del codice in due parti: back e front. È anche stata aggiunta la carta 0C che non esiste nel gioco ma reale ma qui rappresenta la parte dietro della carta che viene usata per girare la seconda carta del dealer.
+
+# 12.02.2025 - 13.02.2025
+Alla fine abbiamo deciso di non separare il codice in 2 parti perchè non ci dava tanti vantaggi. Abbiamo aggiunto anche la funzione che ci permette di fare il background del sito. Ho anche aggiunto la nuova classe User che controlla i soldi che vince il giocatore. In questo momento puo funzionare ma non ha tanto senso perché ogni volta che viene pulito il cache il balance ritorna al valore iniziale.
+
+# 19.02.2025
+Ho aggiunto 3 nuovi file: login, sign_up e navigation, cosi creando un sistema login. Ora il programma partisce dal file login. Dopo che l'utente entra nel nostro sistema riesce a giocare, per ora senza le puntate. Se l'utente non ha un account puo semplicemente crearselo tramite pagina sign_up. I dati forniti vengono caricati nel file accounts che contiene i dizionari con i dati degli utenti. Per ora il username non viene collegato al gioco e il sistema sign out non funziona come dovrebbe ma questi problemi verrano risolti.
+
+# 26.02.2025
+
+Abbiamo aggioranto il sistema login. Ora l'uetnte riceve al suo username anche un valore iniziale di 2000$ che viene salvato nel file balance come il dizionario. Abbiamo applicato questo sistema al gioco e funziona, solo che il balance viene sempre aggiornato quando si pulisce il session stateю
+
+# 12.03.2025
+
+Abbiamo risolto il problema con il balance che si aggiornava facendo username rimanere nel session state. Adesso il gioco è completamente funzionante.
+
+# 01.04.2025
+
+Ho fixato i bug con il sistema log out e ho anche pulito il codice.

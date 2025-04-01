@@ -3,6 +3,9 @@ import json
 import os
 from time import sleep
 from login import existing_data
+from navigation import make_sidebar
+
+make_sidebar()
 
 json_file = "accounts.json"
 if os.path.exists(json_file):
@@ -35,7 +38,7 @@ diclist_b = st.session_state.dicb
 
 st.title("Welcome to BlackJack")
 
-st.write("Please sign up to continue (username `test`, password `test`).")
+st.write("Create your account.")
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
