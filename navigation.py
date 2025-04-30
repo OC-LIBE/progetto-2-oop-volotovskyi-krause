@@ -7,11 +7,16 @@ def logout():
     sleep(0.5)
     st.switch_page("login.py")
 
+logo = ("images/icon.png")
+
 def make_sidebar():
     with st.sidebar:
         st.title("BlackJack")
         st.write("")
         st.write("")
+
+        
+        st.logo(logo, size='large')
 
         if 'username' in st.session_state:
             

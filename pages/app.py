@@ -267,11 +267,13 @@ if plscore > 21 or dlscore == 21:
 if 'stand' in st.session_state and 'winlose' not in st.session_state:
     game.result()
 
-
-st.image([card.image for card in dealer.handf], width=card_width)
-st.markdown(f'Dealer score: {dlscore}')
-st.image([card.image for card in player.handf], width=card_width)     
-st.markdown(f'Your score: {plscore}')
+col1, col2, col3 = st.columns(3)
+with col2:
+    st.image([card.image for card in dealer.handf], width=card_width)
+    st.markdown(f'Dealer score: {dlscore}')
+with col1:
+    st.image([card.image for card in player.handf], width=card_width)     
+    st.markdown(f'Your score: {plscore}')
 
 
 

@@ -48,3 +48,7 @@ Abbiamo risolto il problema con il balance che si aggiornava facendo username ri
 # 01.04.2025
 
 Ho fixato i bug con il sistema log out e ho anche pulito il codice.
+
+# 02.04.2025
+
+Ho cambiato un po' la user interface.
